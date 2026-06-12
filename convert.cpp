@@ -25,16 +25,40 @@ unordered_map<string, double> length = {
     {"nm", 1e-9}
 };
 
+double calculate(double value, string from, string to)
+{
+	return (value * (length[from]) / (length[to]));
+	// return to_value;
+}
+
 
 string conversion()
 {
-
-	return "";
+	string from, to;
+	string measurement;
+	// string msmnts = 
+	// "Length"
+	// "Weight/Mass"
+	// "Temperature"
+	// "Area"
+	// "Volume"
+	// "Time"
+	// "Speed"
+	// "Data Storage (KB, MB, GB, etc.)"
+	// "Angle";
+	while (true)
+	{
+		// cout << msmnts << endl;
+		// cout << "Enter what you want to convert: ";
+		cout << "Enter the unit you want to convert from: ";
+		
+	}
 }
 
 
 int main()
 {
+	clearScreen();
 	cout << "CONVERTER++" << endl;
 	cout << endl;
 
