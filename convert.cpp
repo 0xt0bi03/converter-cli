@@ -34,8 +34,6 @@ double calculate(double value, string from, string to)
 
 string conversion()
 {
-	string from, to;
-	string measurement;
 	// string msmnts = 
 	// "Length"
 	// "Weight/Mass"
@@ -46,13 +44,54 @@ string conversion()
 	// "Speed"
 	// "Data Storage (KB, MB, GB, etc.)"
 	// "Angle";
+	string from, to;
+	string measurement; double value;
 	while (true)
 	{
-		// cout << msmnts << endl;
-		// cout << "Enter what you want to convert: ";
 		cout << "Enter the unit you want to convert from: ";
-		
+		cin >> from;
+		if(length[from])
+		{
+			break;
+		}
+		else
+        {
+            cout << "Invalid entry..." << endl;
+            cin.clear();   // fix state
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clears the bufffer
+        }
 	}
+	while (true)
+	{
+		cout << "Enter the unit you want to convert to: ";
+		cin >> to;
+		if(length[to])
+		{
+			break;
+		}
+		else
+        {
+            cout << "Invalid entry..." << endl;
+            cin.clear();   // fix state
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clears the bufffer
+        }
+	}
+	while (true)
+	{
+		cout << "Enter the value: ";
+		
+		if(cin >> value)
+		{
+			break;
+		}
+		else
+        {
+            cout << "Invalid entry..." << endl;
+            cin.clear();   // fix state
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clears the bufffer
+        }
+	}
+
 }
 
 
