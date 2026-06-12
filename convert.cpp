@@ -40,7 +40,139 @@ unordered_map<string, double> mass = {
     {"ug", 1e-9}         // microgram
 };
 
-unordered_map <string, unordered_map<string, double>> units = {{"length", length}, {"mass", mass}};
+// time
+unordered_map<string, double> time_data = {
+    {"ns", 1e-9},          // nanosecond
+    {"us", 1e-6},          // microsecond
+    {"ms", 1e-3},          // millisecond
+    {"s", 1.0},            // second
+    {"min", 60.0},         // minute
+    {"h", 3600.0},         // hour
+    {"d", 86400.0},        // day
+    {"wk", 604800.0},      // week
+    {"mo", 2629800.0},     // month (30.44 days average)
+    {"yr", 31557600.0}     // year (365.25 days)
+};
+
+// data
+unordered_map<string, double> data_speed = {
+    {"b", 1.0 / 8.0},                // bit
+    {"B", 1.0},                      // byte
+    {"KB", 1000.0},
+    {"MB", 1000.0 * 1000.0},
+    {"GB", 1000.0 * 1000.0 * 1000.0},
+    {"TB", 1000.0 * 1000.0 * 1000.0 * 1000.0},
+
+    {"KiB", 1024.0},
+    {"MiB", 1024.0 * 1024.0},
+    {"GiB", 1024.0 * 1024.0 * 1024.0},
+    {"TiB", 1024.0 * 1024.0 * 1024.0 * 1024.0}
+};
+
+unordered_map<string, double> area = {
+    {"mm2", 1e-6},
+    {"cm2", 1e-4},
+    {"m2", 1.0},
+    {"km2", 1e6},
+    {"ha", 10000.0},      // hectare
+    {"ac", 4046.8564224}, // acre
+    {"ft2", 0.09290304},
+    {"yd2", 0.83612736},
+    {"mi2", 2589988.110336}
+};
+
+unordered_map<string, double> volume = {
+    {"mm3", 1e-9},
+    {"cm3", 1e-6},
+    {"m3", 1.0},
+    {"L", 0.001},
+    {"mL", 1e-6},
+    {"ft3", 0.0283168},
+    {"yd3", 0.764555},
+    {"gal", 0.00378541}, // US gallon
+    {"qt", 0.000946353},
+    {"pt", 0.000473176}
+};
+
+
+unordered_map<string, double> speed = {
+    {"mps", 1.0},
+    {"kph", 0.277778},
+    {"mph", 0.44704},
+    {"fps", 0.3048},
+    {"knot", 0.514444}
+};
+
+unordered_map<string, double> pressure = {
+    {"Pa", 1.0},
+    {"kPa", 1000.0},
+    {"MPa", 1e6},
+    {"bar", 100000.0},
+    {"atm", 101325.0},
+    {"psi", 6894.757},
+    {"torr", 133.322}
+};
+
+unordered_map<string, double> energy = {
+    {"J", 1.0},
+    {"kJ", 1000.0},
+    {"MJ", 1e6},
+    {"Wh", 3600.0},
+    {"kWh", 3.6e6},
+    {"cal", 4.184},
+    {"kcal", 4184.0},
+    {"BTU", 1055.06}
+};
+
+unordered_map<string, double> power = {
+    {"W", 1.0},
+    {"kW", 1000.0},
+    {"MW", 1e6},
+    {"GW", 1e9},
+    {"hp", 745.7}
+};
+
+unordered_map<string, double> force = {
+    {"N", 1.0},
+    {"kN", 1000.0},
+    {"MN", 1e6},
+    {"lbf", 4.44822},
+    {"kgf", 9.80665}
+};
+
+unordered_map<string, double> frequency = {
+    {"Hz", 1.0},
+    {"kHz", 1e3},
+    {"MHz", 1e6},
+    {"GHz", 1e9},
+    {"THz", 1e12}
+};
+
+
+unordered_map<string, double> angle = {
+    {"rad", 1.0},
+    {"deg", 0.01745329252},
+    {"grad", 0.01570796327},
+    {"rev", 6.28318530718}
+};
+
+unordered_map <string, unordered_map<string, double>> units = {
+	{"length", length}, 
+	{"mass", mass},
+	{"time", time_data},
+	{"data", data_speed},
+	{"area", area},
+	{"volume", volume},
+	{"speed", speed},
+	{"pressure", pressure},
+	{"energy", energy},
+	{"power", power},
+	{"force", force},
+	{"frequency", frequency},
+	{"angle", angle},
+	
+
+};
 
 double calculate(const string& param, const string& from, const string& to, double value)
 {
@@ -63,13 +195,25 @@ void printHelp()
 
 void listUnits()
 {
-    cout << "Length units:\n";
-    for (const auto& unit : length)
-        cout << "  " << unit.first << '\n';
+    // cout << "Length units:\n";
+    // for (const auto& unit : length)
+    //     cout << "  " << unit.first << '\n';
 
-    cout << "\nMass units:\n";
-    for (const auto& unit : mass)
-        cout << "  " << unit.first << '\n';
+    // cout << "\nMass units:\n";
+    // for (const auto& unit : mass)
+    //     cout << "  " << unit.first << '\n';
+
+	
+	for(const auto& it : units)
+	{
+		cout << it.first << ":\n";
+		for(const auto& iter : it.second)
+		{
+			cout << "  " << iter.first << endl;
+		}
+		cout << endl;
+	}
+
 }
 
 int main(int argc, char* argv[])
