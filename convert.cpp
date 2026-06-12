@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// clearing the screen.
 void clearScreen() {
 #ifdef _WIN32
     system("cls");
@@ -10,27 +9,6 @@ void clearScreen() {
 #endif
 }
 
-struct data_point
-{
-	string from;
-	string to;
-	double value;
-};
-
-
-// string msmnts = 
-	// "Length"
-	// "Weight/Mass"
-	// "Temperature"
-	// "Area"
-	// "Volume"
-	// "Time"
-	// "Speed"
-	// "Data Storage (KB, MB, GB, etc.)"
-	// "Angle";
-
-
-// Length values to convert
 unordered_map<string, double> length = {
     {"mm", 0.001},
     {"cm", 0.01},
@@ -46,81 +24,91 @@ unordered_map<string, double> length = {
     {"nm", 1e-9}
 };
 
-// this is where calculation happens
-double calculate(string from, string to, double value)
+double calculate(const string& from, const string& to, double value)
 {
-	return (value * (length[from]) / (length[to]));
-	// return to_value;
+    return value * length[from] / length[to];
 }
 
-
-// this is where input happens
-data_point conversion()
-{
-	data_point dataholder;
-	// asking values
-	string from, to;
-	string measurement; double value;
-	while (true)
-	{
-		cout << "Enter the unit you want to convert from: ";
-		cin >> dataholder.from;
-		if(length[dataholder.from])
-		{
-			break;
-		}
-		else
-        {
-            cout << "Invalid entry..." << endl;
-            cin.clear();   // fix state
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clears the bufffer
-        }
-	}
-	while (true)
-	{
-		cout << "Enter the unit you want to convert to: ";
-		cin >> dataholder.to;
-		if(length[dataholder.to])
-		{
-			break;
-		}
-		else
-        {
-            cout << "Invalid entry..." << endl;
-            cin.clear();   // fix state
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clears the bufffer
-        }
-	}
-	while (true)
-	{
-		cout << "Enter the value: ";
-		
-		if(cin >> dataholder.value)
-		{
-			break;
-		}
-		else
-        {
-            cout << "Invalid entry..." << endl;
-            cin.clear();   // fix state
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clears the bufffer
-        }
-	}
-	return dataholder;
-}
-
-
-int main()
+void printHelp()
 {
 	clearScreen();
-	cout << "CONVERTER++" << endl;
-	cout << endl;
-	data_point recieved = conversion();
+    cout << "CONVERTER++\n\n";
+    cout << "Usage:\n";
+    cout << "  convert <from> <to> <value>\n\n";
+    cout << "Examples:\n";
+    cout << "  convert cm m 100\n";
+    cout << "  convert km mi 5\n\n";
+    cout << "Options:\n";
+    cout << "  --help         Show this help message\n";
+    cout << "  --list-units   Show all available units\n";
+}
 
-	double ans = calculate(recieved.from, recieved.to, recieved.value);
+void listUnits()
+{
+    cout << "Available units:\n";
 
-	cout << ans << " " << recieved.to << endl;
+    for (const auto& unit : length)
+    {
+        cout << "  " << unit.first << '\n';
+    }
+}
 
+int main(int argc, char* argv[])
+{
+    if (argc == 2)
+    {
+        string arg = argv[1];
 
-	return 0;
+        if (arg == "--help")
+        {
+            printHelp();
+            return 0;
+        }
+
+        if (arg == "--list-units")
+        {
+            listUnits();
+            return 0;
+        }
+    }
+
+    if (argc != 4)
+    {
+        cerr << "Usage: convert <from> <to> <value>\n";
+        cerr << "Try 'convert --help' for more information.\n";
+        return 1;
+    }
+
+    string from = argv[1];
+    string to = argv[2];
+
+    if (!length.count(from))
+    {
+        cerr << "Error: Unknown unit '" << from << "'\n";
+        return 1;
+    }
+
+    if (!length.count(to))
+    {
+        cerr << "Error: Unknown unit '" << to << "'\n";
+        return 1;
+    }
+
+    double value;
+
+    try
+    {
+        value = stod(argv[3]);
+    }
+    catch (...)
+    {
+        cerr << "Error: Invalid number '" << argv[3] << "'\n";
+        return 1;
+    }
+
+    double result = calculate(from, to, value);
+
+    cout << result << '\n';
+
+    return 0;
 }
