@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
 
     double result = calculate(param, from, to, value);
 
-    cout << result << '\n';
+    cout << result << " " << to << '\n';
 
     return 0;
 }
