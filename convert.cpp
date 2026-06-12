@@ -9,8 +9,10 @@ void clearScreen() {
 #endif
 }
 
+
+// length
 unordered_map<string, double> length = {
-    {"mm", 0.001},
+	{"mm", 0.001},
     {"cm", 0.01},
     {"dm", 0.1},
     {"m", 1.0},
@@ -24,9 +26,25 @@ unordered_map<string, double> length = {
     {"nm", 1e-9}
 };
 
-double calculate(const string& from, const string& to, double value)
+// weight
+unordered_map<string, double> mass = {
+	{"mg", 1e-6},        // milligram
+    {"g", 0.001},        // gram
+    {"kg", 1.0},         // kilogram (base unit)
+    {"t", 1000.0},       // metric ton
+    {"oz", 0.0283495},   // ounce
+    {"lb", 0.453592},    // pound
+    {"st", 6.35029},     // stone
+    {"ust", 907.185},    // US short ton
+    {"lt", 1016.05},     // Long ton (UK)
+    {"ug", 1e-9}         // microgram
+};
+
+unordered_map <string, unordered_map<string, double>> units = {{"length", length}, {"mass", mass}};
+
+double calculate(const string& param, const string& from, const string& to, double value)
 {
-    return value * length[from] / length[to];
+	return value * units[param][from] / units[param][to];
 }
 
 void printHelp()
@@ -34,10 +52,10 @@ void printHelp()
 	clearScreen();
     cout << "CONVERTER++\n\n";
     cout << "Usage:\n";
-    cout << "  convert <from> <to> <value>\n\n";
+    cout << "  convert <param> <from> <to> <value>\n\n";
     cout << "Examples:\n";
-    cout << "  convert cm m 100\n";
-    cout << "  convert km mi 5\n\n";
+    cout << "  convert length cm m 100\n";
+    cout << "  convert mass kg g 5\n\n";
     cout << "Options:\n";
     cout << "  --help         Show this help message\n";
     cout << "  --list-units   Show all available units\n";
@@ -45,12 +63,13 @@ void printHelp()
 
 void listUnits()
 {
-    cout << "Available units:\n";
-
+    cout << "Length units:\n";
     for (const auto& unit : length)
-    {
         cout << "  " << unit.first << '\n';
-    }
+
+    cout << "\nMass units:\n";
+    for (const auto& unit : mass)
+        cout << "  " << unit.first << '\n';
 }
 
 int main(int argc, char* argv[])
@@ -72,41 +91,48 @@ int main(int argc, char* argv[])
         }
     }
 
-    if (argc != 4)
+    if (argc != 5)
     {
-        cerr << "Usage: convert <from> <to> <value>\n";
+        cerr << "Usage: convert <param> <from> <to> <value>\n";
         cerr << "Try 'convert --help' for more information.\n";
         return 1;
     }
 
-    string from = argv[1];
-    string to = argv[2];
+	string param = argv[1];
+    string from = argv[2];
+    string to = argv[3];
 
-    if (!length.count(from))
-    {
-        cerr << "Error: Unknown unit '" << from << "'\n";
+	if(param != "length" && param != "mass")
+	{
+		cerr << "Error: Unknown unit '" << param << "'\n";
         return 1;
-    }
+	}
 
-    if (!length.count(to))
-    {
-        cerr << "Error: Unknown unit '" << to << "'\n";
-        return 1;
-    }
+    if (!units[param].count(from))
+	{
+		cerr << "Error: Unknown unit '" << from << "'\n";
+		return 1;
+	}
+
+	if (!units[param].count(to))
+	{
+		cerr << "Error: Unknown unit '" << to << "'\n";
+		return 1;
+	}
 
     double value;
 
     try
     {
-        value = stod(argv[3]);
+        value = stod(argv[4]);
     }
     catch (...)
     {
-        cerr << "Error: Invalid number '" << argv[3] << "'\n";
+        cerr << "Error: Invalid number '" << argv[4] << "'\n";
         return 1;
     }
 
-    double result = calculate(from, to, value);
+    double result = calculate(param, from, to, value);
 
     cout << result << '\n';
 
