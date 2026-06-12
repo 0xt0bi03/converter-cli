@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// this clears the screen 
 void clearScreen() {
 #ifdef _WIN32
     system("cls");
@@ -156,6 +157,7 @@ unordered_map<string, double> angle = {
     {"rev", 6.28318530718}
 };
 
+// all the units for calling
 unordered_map <string, unordered_map<string, double>> units = {
 	{"length", length}, 
 	{"mass", mass},
@@ -170,15 +172,15 @@ unordered_map <string, unordered_map<string, double>> units = {
 	{"force", force},
 	{"frequency", frequency},
 	{"angle", angle},
-	
-
 };
 
 double calculate(const string& param, const string& from, const string& to, double value)
 {
-	return value * units[param][from] / units[param][to];
+    return value * units.at(param).at(from) / units.at(param).at(to);
 }
 
+
+// this prints the help function to how to use it
 void printHelp()
 {
 	clearScreen();
@@ -193,17 +195,9 @@ void printHelp()
     cout << "  --list-units   Show all available units\n";
 }
 
+// lists all the units available for conversion
 void listUnits()
-{
-    // cout << "Length units:\n";
-    // for (const auto& unit : length)
-    //     cout << "  " << unit.first << '\n';
-
-    // cout << "\nMass units:\n";
-    // for (const auto& unit : mass)
-    //     cout << "  " << unit.first << '\n';
-
-	
+{	
 	for(const auto& it : units)
 	{
 		cout << it.first << ":\n";
@@ -213,9 +207,9 @@ void listUnits()
 		}
 		cout << endl;
 	}
-
 }
 
+// main function which calls everything
 int main(int argc, char* argv[])
 {
     if (argc == 2)
@@ -246,10 +240,10 @@ int main(int argc, char* argv[])
     string from = argv[2];
     string to = argv[3];
 
-	if(param != "length" && param != "mass")
+	if (!units.count(param))
 	{
-		cerr << "Error: Unknown unit '" << param << "'\n";
-        return 1;
+		cerr << "Error: Unknown parameter '" << param << "'\n";
+		return 1;
 	}
 
     if (!units[param].count(from))
